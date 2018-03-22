@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import javax.servlet.AsyncContext;
 import javax.servlet.Servlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @EnableAutoConfiguration
@@ -21,7 +24,9 @@ public class SampleController {
 
     @RequestMapping("/")
     @ResponseBody
-    String home() {
+    String home(HttpServletRequest request, HttpServletResponse response) {
+        AsyncContext asyncContext = request.startAsync(request,response);
+        asyncContext.complete();
         return "Hello World!";
     }
 
@@ -30,7 +35,6 @@ public class SampleController {
         TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
         tomcat.setPort(8064);
         tomcat.addAdditionalTomcatConnectors(createNioConnector());
-
         return tomcat;
     }
 
@@ -46,8 +50,6 @@ public class SampleController {
         return servletRegistrationBean;
     }
 
-
-    private ThreadLocal<String> s = new ThreadLocal<>();
 
     private Connector createNioConnector() {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
