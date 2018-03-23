@@ -11,12 +11,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import javax.servlet.AsyncContext;
 import javax.servlet.Servlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @EnableAutoConfiguration
@@ -24,10 +22,20 @@ public class SampleController {
 
     @RequestMapping("/")
     @ResponseBody
-    String home(HttpServletRequest request, HttpServletResponse response) {
-        AsyncContext asyncContext = request.startAsync(request,response);
-        asyncContext.complete();
-        return "Hello World!";
+    DeferredResult<String> home() {
+        final DeferredResult<String> def = new DeferredResult<>();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                def.setResult("hahaha");
+            }
+        }).start();
+        return def;
     }
 
     @Bean
@@ -49,6 +57,7 @@ public class SampleController {
         servletRegistrationBean.setAsyncSupported(true);
         return servletRegistrationBean;
     }
+
 
 
     private Connector createNioConnector() {
