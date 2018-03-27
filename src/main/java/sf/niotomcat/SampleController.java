@@ -35,6 +35,7 @@ public class SampleController {
                 def.setResult("hahaha");
             }
         }).start();
+        //for test
         return def;
     }
 
