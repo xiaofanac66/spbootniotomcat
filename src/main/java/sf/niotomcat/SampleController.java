@@ -35,7 +35,7 @@ public class SampleController {
                 def.setResult("hahaha");
             }
         }).start();
-        //for test
+        //6666
         return def;
     }
 
