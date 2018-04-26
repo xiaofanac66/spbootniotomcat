@@ -59,7 +59,7 @@ public class SampleController {
         return servletRegistrationBean;
     }
 
-    //aaa
+    //aaa bbb
 
     private Connector createNioConnector() {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
