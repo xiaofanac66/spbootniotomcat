@@ -59,10 +59,7 @@ public class SampleController {
         return servletRegistrationBean;
     }
 
-    //aaa bbb
-
     private Connector createNioConnector() {
-        //abc ddd
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
         connector.setPort(38065);
         connector.setAsyncTimeout(100000);
@@ -74,7 +71,7 @@ public class SampleController {
         protocol.setAcceptCount(5);
         protocol.setMaxConnections(5);
         protocol.setProcessorCache(1024);
-        protocol.setMaxThreads(1);
+        protocol.setMaxThreads(10);
         return connector;
     }
 
